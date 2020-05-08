@@ -18,6 +18,7 @@ goog.require('Blockly.utils.aria');
 goog.require('Blockly.utils.object');
 goog.require('Blockly.utils.KeyCodes');
 goog.require('Blockly.utils.style');
+goog.require('Blockly.utils.dataset');
 
 
 /**
@@ -45,6 +46,12 @@ Blockly.tree.BaseNode = function(content, config) {
    * @package
    */
   this.iconClass;
+
+  /**
+   * @type {string}
+   * @package
+   */
+  this.icon;
 
   /**
    * @type {string}
@@ -152,6 +159,8 @@ Blockly.tree.BaseNode.prototype.disposeInternal = function() {
 Blockly.tree.BaseNode.prototype.initAccessibility = function() {
   var el = this.getElement();
   if (el) {
+    Blockly.utils.dataset.setAttribute(el, 'category', this.content);
+
     // Set an id for the label
     var label = this.getLabelElement();
     if (label && !label.id) {
@@ -609,6 +618,11 @@ Blockly.tree.BaseNode.prototype.getIconDom = function() {
   var icon = document.createElement('span');
   icon.style.display = 'inline-block';
   icon.className = this.getCalculatedIconClass();
+
+  if (this.icon) {
+    icon.style.background = this.icon;
+  }
+
   return icon;
 };
 
@@ -618,6 +632,26 @@ Blockly.tree.BaseNode.prototype.getIconDom = function() {
  */
 Blockly.tree.BaseNode.prototype.getCalculatedIconClass = function() {
   throw Error('unimplemented abstract method');
+};
+
+/**
+ * This method is used to set the icon of node.
+ * @param {string} icon .
+ * @protected
+ */
+Blockly.tree.BaseNode.prototype.setIcon = function(icon) {
+  this.icon = icon;
+
+  // var el = this.getIconDom();
+  // el.style.background = icon;
+};
+
+/**
+ * This method is used to get the icon of node .
+ * @returns {string} .
+ */
+Blockly.tree.BaseNode.prototype.getIcon = function() {
+  return this.icon;
 };
 
 /**

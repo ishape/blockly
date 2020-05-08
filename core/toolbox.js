@@ -432,7 +432,13 @@ Blockly.Toolbox.prototype.syncTrees_ = function(treeIn, treeOut, pathToMedia) {
         // (eg. `%{BKY_CATEGORY_NAME_LOGIC}`).
         var categoryName = Blockly.utils.replaceMessageReferences(
             childIn.getAttribute('name'));
+        // TODO: How to custom the icon ?
+        var icon = childIn.getAttribute('icon');
+
         var childOut = this.tree_.createNode(categoryName);
+        if (icon) {
+          childOut.setIcon(icon);
+        }
         childOut.onSizeChanged(this.handleNodeSizeChanged_);
         childOut.contents = [];
         treeOut.add(childOut);
@@ -793,7 +799,6 @@ Blockly.Css.register([
   '}',
 
   '.blocklyTreeIcon {',
-    'background-image: url(<<<PATH>>>/sprites.png);',
     'height: 16px;',
     'vertical-align: middle;',
     'width: 16px;',
